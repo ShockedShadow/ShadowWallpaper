@@ -209,22 +209,25 @@
 
         // Gallery Generation
     function updateGallery() {
-    const query = document.getElementById('searchInput').value || 'Cyberpunk';
+    const rawQuery = document.getElementById('searchInput').value || 'Cyberpunk';
+    const query = rawQuery.toUpperCase();
     const grid = document.getElementById('grid');
     grid.innerHTML = '';
     
     for(let i=0; i<30; i++) {
-        // Using Picsum for 100% uptime on images
         const randomID = Math.floor(Math.random() * 1000);
         const img = `https://picsum.photos/seed/${randomID}/1200/800`;
+        
+        // Pad the number (e.g., 01, 02) for a cleaner "Data Log" look
+        const logNumber = (i + 1).toString().padStart(2, '0');
         
         grid.innerHTML += `
             <div class="card">
                 <div class="scan-line"></div>
                 <img src="${img}">
                 <div class="card-info">
-                    <h3>DATA_NODE_${i+1}</h3>
-                    <a href="shadow://${img}" class="sync-btn">ESTABLISH_LINK</a>
+                    <h3>FILE: ${query}_SPECIMEN_${logNumber}</h3>
+                    <a href="shadow://${img}" class="btn">SYNC TO DESKTOP</a>
                 </div>
             </div>`;
     }
