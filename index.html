@@ -208,19 +208,20 @@
         setInterval(drawParticles, 150);
 
         // Gallery Generation
-       function updateGallery() {
+    function updateGallery() {
     const query = document.getElementById('searchInput').value || 'Cyberpunk';
     const grid = document.getElementById('grid');
     grid.innerHTML = '';
     
     for(let i=0; i<30; i++) {
-        // Updated URL structure for better reliability
-        const img = `https://source.unsplash.com/1600x900/?${query}&${Math.random()}`;
+        // Using Picsum for 100% uptime on images
+        const randomID = Math.floor(Math.random() * 1000);
+        const img = `https://picsum.photos/seed/${randomID}/1200/800`;
         
         grid.innerHTML += `
             <div class="card">
                 <div class="scan-line"></div>
-                <img src="${img}" onerror="this.src='https://via.placeholder.com/1600x900/111/BB86FC?text=DATA_LOST'">
+                <img src="${img}">
                 <div class="card-info">
                     <h3>DATA_NODE_${i+1}</h3>
                     <a href="shadow://${img}" class="sync-btn">ESTABLISH_LINK</a>
