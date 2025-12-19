@@ -1,42 +1,232 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Shadow Sync | Wallpapers</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SHADOW SYNC | NEURAL GALLERY</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&family=Inter:wght@300;600&display=swap" rel="stylesheet">
     <style>
-        body { background: #050505; color: white; font-family: 'Inter', sans-serif; text-align: center; margin: 0; }
-        .hero { padding: 80px 20px; background: linear-gradient(to bottom, #111, #050505); }
-        h1 { color: #BB86FC; font-size: 3rem; letter-spacing: 5px; margin: 0; }
-        .gallery { display: flex; flex-wrap: wrap; justify-content: center; gap: 30px; padding: 50px; }
-        .card { background: #111; width: 320px; border-radius: 20px; overflow: hidden; border: 1px solid #222; transition: 0.4s; }
-        .card:hover { border-color: #BB86FC; transform: translateY(-10px); }
-        .card img { width: 100%; height: 200px; object-fit: cover; }
-        .card-body { padding: 20px; }
-        .btn { display: block; background: #BB86FC; color: black; padding: 12px; border-radius: 10px; 
-               text-decoration: none; font-weight: bold; margin-top: 15px; }
+        :root {
+            --accent: #BB86FC;
+            --bg: #020202;
+            --glass: rgba(255, 255, 255, 0.05);
+            --border: rgba(187, 134, 252, 0.2);
+        }
+
+        body {
+            background-color: var(--bg);
+            color: white;
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        /* Animated Background */
+        #canvas-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: -1;
+            opacity: 0.4;
+        }
+
+        header {
+            padding: 80px 20px;
+            text-align: center;
+            background: linear-gradient(to bottom, rgba(187, 134, 252, 0.1), transparent);
+        }
+
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3.5rem;
+            letter-spacing: 15px;
+            margin: 0;
+            background: linear-gradient(90deg, #fff, var(--accent), #fff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 30px rgba(187, 134, 252, 0.5);
+        }
+
+        .search-wrap {
+            margin-top: 40px;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        input {
+            background: var(--glass);
+            border: 1px solid var(--border);
+            padding: 15px 30px;
+            border-radius: 5px;
+            color: white;
+            width: 400px;
+            font-family: 'Orbitron', sans-serif;
+            backdrop-filter: blur(10px);
+            transition: 0.3s;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 20px var(--border);
+        }
+
+        button {
+            background: var(--accent);
+            color: black;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 5px;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 900;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background: white;
+            box-shadow: 0 0 30px var(--accent);
+            transform: translateY(-2px);
+        }
+
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 40px;
+            padding: 60px;
+        }
+
+        .card {
+            background: var(--glass);
+            border-radius: 0px; /* Sharp futuristic edges */
+            border-left: 4px solid var(--accent);
+            overflow: hidden;
+            position: relative;
+            backdrop-filter: blur(15px);
+            transition: 0.5s;
+        }
+
+        .card:hover {
+            transform: scale(1.02) translateY(-10px);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .card img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            filter: grayscale(40%);
+            transition: 0.5s;
+        }
+
+        .card:hover img {
+            filter: grayscale(0%);
+        }
+
+        .card-info {
+            padding: 25px;
+            background: linear-gradient(to top, black, transparent);
+        }
+
+        .card-info h3 {
+            font-family: 'Orbitron', sans-serif;
+            margin: 0;
+            font-size: 0.9rem;
+            letter-spacing: 2px;
+            color: var(--accent);
+        }
+
+        .sync-btn {
+            display: inline-block;
+            margin-top: 20px;
+            text-decoration: none;
+            color: white;
+            border: 1px solid var(--accent);
+            padding: 10px 20px;
+            font-size: 0.7rem;
+            font-family: 'Orbitron', sans-serif;
+            letter-spacing: 2px;
+            transition: 0.3s;
+        }
+
+        .sync-btn:hover {
+            background: var(--accent);
+            color: black;
+        }
+
+        /* Loading UI Bar */
+        .scan-line {
+            width: 100%;
+            height: 2px;
+            background: var(--accent);
+            position: absolute;
+            top: 0;
+            z-index: 10;
+            box-shadow: 0 0 15px var(--accent);
+            animation: scan 3s infinite linear;
+        }
+
+        @keyframes scan {
+            0% { top: 0; opacity: 0; }
+            50% { opacity: 1; }
+            100% { top: 100%; opacity: 0; }
+        }
     </style>
 </head>
 <body>
-    <div class="hero">
-        <h1>SHADOW SYNC</h1>
-        <p>One-click desktop wallpaper synchronization.</p>
-    </div>
 
-    <div class="gallery">
-        <div class="card">
-            <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe">
-            <div class="card-body">
-                <h3>Vapor Aura</h3>
-                <a href="shadow://https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe" class="btn">SYNC TO DESKTOP</a>
-            </div>
-        </div>
+    <canvas id="canvas-bg"></canvas>
 
-        <div class="card">
-            <img src="https://images.unsplash.com/photo-1601049541289-9b1b7bbbfe19">
-            <div class="card-body">
-                <h3>Tokyo Neon</h3>
-                <a href="shadow://https://images.unsplash.com/photo-1601049541289-9b1b7bbbfe19" class="btn">SYNC TO DESKTOP</a>
-            </div>
+    <header>
+        <h1>SHADOW_SYNC</h1>
+        <p class="subtitle">NEURAL LINK ESTABLISHED // READY TO DOWNLOAD</p>
+        <div class="search-wrap">
+            <input type="text" id="searchInput" placeholder="ENTER CATEGORY...">
+            <button onclick="updateGallery()">INITIALIZE SEARCH</button>
         </div>
-    </div>
+    </header>
+
+    <div class="gallery" id="grid"></div>
+
+    <script>
+        // Particle Background Logic
+        const canvas = document.getElementById('canvas-bg');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        function drawParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#BB86FC';
+            for(let i=0; i<100; i++) {
+                ctx.beginPath();
+                ctx.arc(Math.random()*canvas.width, Math.random()*canvas.height, 1, 0, Math.PI*2);
+                ctx.fill();
+            }
+        }
+        setInterval(drawParticles, 150);
+
+        // Gallery Generation
+        function updateGallery() {
+            const query = document.getElementById('searchInput').value || 'Cyberpunk';
+            const grid = document.getElementById('grid');
+            grid.innerHTML = '';
+            
+            for(let i=0; i<30; i++) {
+                const img = `https://images.unsplash.com/featured/1200x800/?${query}&sig=${Math.random()}`;
+                grid.innerHTML += `
+                    <div class="card">
+                        <div class="scan-line"></div>
+                        <img src="${img}">
+                        <div class="card-info">
+                            <h3>DATA_NODE_${i+1}</h3>
+                            <a href="shadow://${img}" class="sync-btn">ESTABLISH_LINK</a>
+                        </div>
+                    </div>`;
+            }
+        }
+        updateGallery();
+    </script>
 </body>
 </html>
