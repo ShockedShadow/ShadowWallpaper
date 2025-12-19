@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ShadowWallpaper | Gallery</title>
+    <style>
+        body { background: #0a0a0a; color: #e0e0e0; font-family: 'Segoe UI', sans-serif; text-align: center; }
+        .gallery { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; padding: 40px; }
+        .card { background: #1a1a1a; border: 1px solid #333; border-radius: 12px; overflow: hidden; width: 300px; transition: 0.3s; }
+        .card:hover { border-color: #bb86fc; transform: translateY(-5px); }
+        .card img { width: 100%; height: 180px; object-fit: cover; }
+        .card-info { padding: 15px; }
+        .btn { display: inline-block; background: #bb86fc; color: #000; padding: 10px 20px; 
+               border-radius: 6px; text-decoration: none; font-weight: bold; margin-top: 10px; }
+        .btn:hover { background: #cfabff; }
+        h1 { margin-top: 50px; color: #bb86fc; letter-spacing: 2px; }
+    </style>
+</head>
+<body>
+
+    <h1>SHADOW WALLPAPER</h1>
+    <p>Click a wallpaper to sync it with your desktop app.</p>
+
+    <div class="gallery">
+        <div class="card">
+            <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe" alt="Abstract">
+            <div class="card-info">
+                <h3>Neon Flow</h3>
+                <a href="shadow://https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe" class="btn">GET WALLPAPER</a>
+            </div>
+        </div>
+
+        <div class="card">
+            <img src="https://images.unsplash.com/photo-1550684848-fac1c5b4e853" alt="Dark">
+            <div class="card-info">
+                <h3>Shadow Abyss</h3>
+                <a href="shadow://https://images.unsplash.com/photo-1550684848-fac1c5b4e853" class="btn">GET WALLPAPER</a>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
