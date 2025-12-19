@@ -2,73 +2,54 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>SHADOW SYNC | MASTER UPLINK</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&family=Inter:wght@300;600&display=swap" rel="stylesheet">
+    <title>SHADOW SYNC | MASTER ARCHIVE</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&display=swap" rel="stylesheet">
     <style>
-        :root { --accent: #BB86FC; --bg: #020202; --glass: rgba(255, 255, 255, 0.05); }
-        body { background-color: var(--bg); color: white; font-family: 'Inter', sans-serif; margin: 0; overflow-x: hidden; }
-        header { padding: 60px 20px; text-align: center; border-bottom: 1px solid rgba(187, 134, 252, 0.2); }
-        h1 { font-family: 'Orbitron', sans-serif; font-size: 3rem; letter-spacing: 12px; margin: 0; color: var(--accent); }
-        .controls { margin-top: 30px; display: flex; justify-content: center; gap: 10px; }
-        input { background: var(--glass); border: 1px solid rgba(187, 134, 252, 0.3); padding: 12px 25px; border-radius: 4px; color: white; width: 300px; font-family: 'Orbitron', sans-serif; }
-        button { background: var(--accent); color: black; border: none; padding: 12px 30px; border-radius: 4px; font-family: 'Orbitron', sans-serif; font-weight: 900; cursor: pointer; transition: 0.2s; }
-        button.alt { background: transparent; color: var(--accent); border: 1px solid var(--accent); }
-        button:hover { filter: brightness(1.2); transform: translateY(-2px); }
-        .gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 30px; padding: 40px; }
-        .card { background: var(--glass); border-left: 3px solid var(--accent); overflow: hidden; backdrop-filter: blur(10px); transition: 0.4s; }
-        .card:hover { transform: scale(1.02); background: rgba(255, 255, 255, 0.08); }
-        .card img { width: 100%; height: 200px; object-fit: cover; }
+        :root { --accent: #BB86FC; --bg: #050505; }
+        body { background: var(--bg); color: white; font-family: 'Segoe UI', sans-serif; margin: 0; text-align: center; }
+        header { padding: 80px 20px; border-bottom: 1px solid #111; }
+        h1 { font-family: 'Orbitron', sans-serif; color: var(--accent); letter-spacing: 15px; font-size: 3rem; cursor: pointer; }
+        .search-wrap { margin-top: 30px; }
+        input { background: #111; border: 1px solid #333; color: white; padding: 15px 25px; border-radius: 5px; width: 350px; font-family: 'Orbitron'; }
+        button { background: var(--accent); border: none; padding: 15px 30px; border-radius: 5px; font-weight: bold; font-family: 'Orbitron'; cursor: pointer; }
+        .gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 30px; padding: 50px; }
+        .card { background: #0A0A0A; border-left: 4px solid var(--accent); overflow: hidden; transition: 0.3s; }
+        .card:hover { transform: translateY(-10px); box-shadow: 0 10px 30px rgba(187, 134, 252, 0.2); }
+        .card img { width: 100%; height: 220px; object-fit: cover; }
         .card-info { padding: 20px; text-align: left; }
-        .card-info h3 { font-family: 'Orbitron', sans-serif; margin: 0; font-size: 0.75rem; color: #aaa; min-height: 35px; }
-        .sync-btn { display: block; margin-top: 15px; text-decoration: none; color: var(--accent); border: 1px solid var(--accent); padding: 8px; text-align: center; font-family: 'Orbitron', sans-serif; font-size: 0.65rem; transition: 0.3s; }
+        .card-info h3 { font-size: 0.8rem; letter-spacing: 1px; color: #888; margin: 0; }
+        .sync-btn { display: inline-block; margin-top: 15px; color: var(--accent); text-decoration: none; border: 1px solid var(--accent); padding: 8px 15px; font-size: 0.7rem; font-family: 'Orbitron'; }
         .sync-btn:hover { background: var(--accent); color: black; }
     </style>
 </head>
 <body>
     <header>
-        <h1>SHADOW_SYNC</h1>
-        <div class="controls">
-            <input type="text" id="searchInput" placeholder="CATEGORY...">
-            <button onclick="updateGallery()">SEARCH</button>
-            <button class="alt" onclick="shuffle()">SHUFFLE</button>
+        <h1 onclick="location.reload()">SHADOW_SYNC</h1>
+        <div class="search-wrap">
+            <input type="text" id="searchInput" placeholder="ENTER QUERY...">
+            <button onclick="updateGallery()">INITIALIZE</button>
         </div>
     </header>
     <div class="gallery" id="grid"></div>
 
     <script>
         const apiKey = "tQchmHqDRGPCGsUAhYsncvbmnw3pQoikAQyVi49wVRHCDBlW7Tz5zUey";
-
-        async function updateGallery(query = '') {
-            const searchTerm = query || document.getElementById('searchInput').value || 'Cyberpunk';
+        async function updateGallery() {
+            const query = document.getElementById('searchInput').value || 'Cyberpunk';
             const grid = document.getElementById('grid');
-            grid.innerHTML = '<p style="grid-column: 1/-1">DECRYPTING ARCHIVES...</p>';
-            
-            try {
-                const response = await fetch(`https://api.pexels.com/v1/search?query=${searchTerm}&per_page=24`, {
-                    headers: { Authorization: apiKey }
-                });
-                const data = await response.json();
-                
-                grid.innerHTML = '';
-                data.photos.forEach(photo => {
-                    grid.innerHTML += `
-                        <div class="card">
-                            <img src="${photo.src.large}">
-                            <div class="card-info">
-                                <h3>${photo.alt.toUpperCase() || 'DATA_POINT'}</h3>
-                                <a href="shadow://${photo.src.original}" class="sync-btn">ESTABLISH_LINK</a>
-                            </div>
-                        </div>`;
-                });
-            } catch(e) { grid.innerHTML = '<p>UPLINK_FAILURE</p>'; }
+            const res = await fetch(`https://api.pexels.com/v1/search?query=${query}&per_page=30`, {
+                headers: { Authorization: apiKey }
+            });
+            const data = await res.json();
+            grid.innerHTML = data.photos.map(p => `
+                <div class="card">
+                    <img src="${p.src.large}">
+                    <div class="card-info">
+                        <h3>${p.alt.toUpperCase() || 'DATA_NODE'}</h3>
+                        <a href="shadow://${p.src.original}" class="sync-btn">ESTABLISH_LINK</a>
+                    </div>
+                </div>`).join('');
         }
-
-        function shuffle() {
-            const terms = ['Neon', 'Space', 'Glitch', 'Futuristic', 'Mecha', 'Dark Nature'];
-            const randomTerm = terms[Math.floor(Math.random() * terms.length)];
-            updateGallery(randomTerm);
-        }
-
         updateGallery();
     </script>
 </body>
