@@ -7,6 +7,34 @@
     <style>
         :root { --accent: #BB86FC; --bg: #050505; }
         body { background: var(--bg); color: white; font-family: 'Segoe UI', sans-serif; margin: 0; text-align: center; }
+        
+        /* New Styles for Top Right Button */
+        .top-nav {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+
+        .nav-btn {
+            background: transparent;
+            color: var(--accent);
+            border: 1px solid var(--accent);
+            padding: 10px 20px;
+            font-family: 'Orbitron', sans-serif;
+            text-decoration: none;
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            transition: 0.3s;
+            box-shadow: 0 0 10px rgba(187, 134, 252, 0.1);
+        }
+
+        .nav-btn:hover {
+            background: var(--accent);
+            color: black;
+            box-shadow: 0 0 20px rgba(187, 134, 252, 0.4);
+        }
+
         header { padding: 80px 20px; border-bottom: 1px solid #111; }
         h1 { font-family: 'Orbitron', sans-serif; color: var(--accent); letter-spacing: 15px; font-size: 3rem; cursor: pointer; }
         .search-wrap { margin-top: 30px; }
@@ -23,6 +51,11 @@
     </style>
 </head>
 <body>
+
+    <div class="top-nav">
+        <a href="https://shockedshadow.github.io/ShadowApplications" class="nav-btn">SHADOW APPLICATIONS</a>
+    </div>
+
     <header>
         <h1 onclick="location.reload()">SHADOW_SYNC</h1>
         <div class="search-wrap">
