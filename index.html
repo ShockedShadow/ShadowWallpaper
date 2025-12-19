@@ -208,24 +208,26 @@
         setInterval(drawParticles, 150);
 
         // Gallery Generation
-        function updateGallery() {
-            const query = document.getElementById('searchInput').value || 'Cyberpunk';
-            const grid = document.getElementById('grid');
-            grid.innerHTML = '';
-            
-            for(let i=0; i<30; i++) {
-                const img = `https://images.unsplash.com/featured/1200x800/?${query}&sig=${Math.random()}`;
-                grid.innerHTML += `
-                    <div class="card">
-                        <div class="scan-line"></div>
-                        <img src="${img}">
-                        <div class="card-info">
-                            <h3>DATA_NODE_${i+1}</h3>
-                            <a href="shadow://${img}" class="sync-btn">ESTABLISH_LINK</a>
-                        </div>
-                    </div>`;
-            }
-        }
+       function updateGallery() {
+    const query = document.getElementById('searchInput').value || 'Cyberpunk';
+    const grid = document.getElementById('grid');
+    grid.innerHTML = '';
+    
+    for(let i=0; i<30; i++) {
+        // Updated URL structure for better reliability
+        const img = `https://source.unsplash.com/1600x900/?${query}&${Math.random()}`;
+        
+        grid.innerHTML += `
+            <div class="card">
+                <div class="scan-line"></div>
+                <img src="${img}" onerror="this.src='https://via.placeholder.com/1600x900/111/BB86FC?text=DATA_LOST'">
+                <div class="card-info">
+                    <h3>DATA_NODE_${i+1}</h3>
+                    <a href="shadow://${img}" class="sync-btn">ESTABLISH_LINK</a>
+                </div>
+            </div>`;
+    }
+}
         updateGallery();
     </script>
 </body>
